@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="color-scheme" content="light dark" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Notes</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/themes/base/jquery-ui.min.css" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1 class="hero">TOOOOO DOOOO</h1>
+		<hr />
+		<div class="container" id="noteContainer">
+			<div class="group column C_TODO" id="C_TODO">
+				<article class="theaders ui-state-disabled">TODO</article>
+			</div>
+			<hr class="mobileHR" />
+			<div class="group column" id="C_PROCESS">
+				<article class="theaders ui-state-disabled">PROCESSING</article>
+			</div>
+			<hr class="mobileHR" />
+			<div class="group column c-done" id="C_DONE">
+				<article class="theaders ui-state-disabled">COMPLETE</article>
+			</div>
+		</div>
+
+		<!-- task preset -->
+		<dialog>
+			<article class="tasks" id="notePreset">
+				<div class="subBTcontainer">
+					<button class="deleteBT subBT" data-tooltip="Delete"></button>
+					<button class="processBT subBT" data-tooltip="Edit"></button>
+					<button class="doneBT subBT" data-tooltip="Complete"></button>
+				</div>
+				<p class="note-title">Place Holder Texts</p>
+			</article>
+		</dialog>
+
+		<!-- preview notes -->
+
+		<dialog class="dialog" id="notePreview">
+			<article>
+				<header>
+					<button aria-label="Close" rel="prev" onclick="$('.dialog').removeAttr('open')"></button>
+					<p><strong class="note-title">The Tittle goes here</strong> <i class="fa-solid fa-pen titleEditBT"></i></p>
+				</header>
+				<textarea class="edit-content note-content">
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Necessitatibus non delectus dolor placeat. Saepe
+					harum nulla velit ab provident. Culpa odio alias dolor delectus commodi fugit, ratione facilis soluta
+					voluptatibus!
+				</textarea
+				>
+			</article>
+		</dialog>
+
+		<!-- note editor -->
+		<dialog class="add-dialog">
+			<article class="AddContent">
+				<header>
+					<input type="text" name="title" class="inp-title" placeholder="title..." />
+					<select name="select" aria-label="Select" required>
+						<option selected disabled value="">Select</option>
+						<option>Done</option>
+						<option>TODO</option>
+						<option>WIP</option>
+					</select>
+					<button aria-label="Close" rel="prev" onclick="$('.add-dialog').removeAttr('open')"></button>
+				</header>
+				<textarea class="edit-content"> </textarea>
+				<button class="addNoteBT contrast">
+					<i class="fa-solid fa-plus"></i>
+				</button>
+			</article>
+		</dialog>
+
+		<!-- add note button -->
+		<button class="addNoteBTFirst" onclick="$('.add-dialog').attr('open', true)">
+			<i class="fa-solid fa-plus"></i>
+		</button>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://kit.fontawesome.com/2e34a63ef0.js" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+		<script src="database.js"></script>
+		<script src="helper.js"></script>
+		<script src="Note.js"></script>
+		<script src="script.js"></script>
+	</body>
+</html>
