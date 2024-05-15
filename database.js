@@ -20,16 +20,17 @@ const SQL = initSqlJs({
                     index_number INTEGER
                 );
             `);
-	db.exec(
-		`INSERT INTO NOTES (title, status, note, index_number) VALUES ('Call plumber', 'in progress', 'Fix leaky faucet', 2);
-		INSERT INTO NOTES (title, status, note, index_number) VALUES ('Test Da daTABase', 'TODO', 'DO IT ASAP', 2);`
-	);
+	// db.exec(
+	// 	`INSERT INTO NOTES (title, status, note, index_number) VALUES ('Call plumber', 'in progress', 'Fix leaky faucet', 2);
+	// 	`
+	// );
 });
 
 async function commitDB() {
 	await SQL;
 	const data = db.export();
 	localStorage.setItem("database", data);
+	console.log("committed");
 }
 
 function downloadDatabase() {
@@ -43,4 +44,28 @@ function downloadDatabase() {
 	a.click();
 
 	URL.revokeObjectURL(url);
+}
+
+function loadDatabaseFromFile() {
+	const fileInput = document.createElement("input");
+	fileInput.type = "file";
+	fileInput.accept = ".sqlite,.db";
+
+	fileInput.addEventListener("change", async (event) => {
+		const file = event.target.files[0];
+		if (!file) return;
+		try {
+			const data = await file.arrayBuffer();
+			const SQL = await initSqlJs({
+				locateFile: (file) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`,
+			});
+			db = new SQL.Database(new Uint8Array(data));
+			console.log("Database loaded successfully");
+			ClearDOMNotes();
+			drawNotes();
+		} catch (error) {
+			console.error("Error loading database:", error);
+		}
+	});
+	fileInput.click();
 }

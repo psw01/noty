@@ -15,15 +15,15 @@
 		<hr />
 		<div class="container" id="noteContainer">
 			<div class="group column C_TODO" id="C_TODO">
-				<article class="theaders ui-state-disabled">TODO</article>
+				<article class="theaders ui-state-disabled" data-state="TODO">TODO</article>
 			</div>
 			<hr class="mobileHR" />
 			<div class="group column" id="C_PROCESS">
-				<article class="theaders ui-state-disabled">PROCESSING</article>
+				<article class="theaders ui-state-disabled" data-state="in progress">PROCESSING</article>
 			</div>
 			<hr class="mobileHR" />
 			<div class="group column c-done" id="C_DONE">
-				<article class="theaders ui-state-disabled">COMPLETE</article>
+				<article class="theaders ui-state-disabled" data-state="Done">COMPLETE</article>
 			</div>
 		</div>
 
@@ -33,7 +33,6 @@
 				<div class="subBTcontainer">
 					<button class="deleteBT subBT" data-tooltip="Delete"></button>
 					<button class="processBT subBT" data-tooltip="Edit"></button>
-					<button class="doneBT subBT" data-tooltip="Complete"></button>
 				</div>
 				<p class="note-title">Place Holder Texts</p>
 			</article>
@@ -41,48 +40,87 @@
 
 		<!-- preview notes -->
 
-		<dialog class="dialog" id="notePreview">
+		<dialog class="preview-dialog" id="notePreview">
 			<article>
 				<header>
-					<button aria-label="Close" rel="prev" onclick="$('.dialog').removeAttr('open')"></button>
-					<p><strong class="note-title">The Tittle goes here</strong> <i class="fa-solid fa-pen titleEditBT"></i></p>
+					<button aria-label="Close" rel="prev" onclick="$('.preview-dialog').removeAttr('open')"></button>
+					<p>
+						<strong class="note-title">The Tittle goes here</strong>
+					</p>
 				</header>
-				<textarea class="edit-content note-content">
+				<textarea class="edit-content note-content" id="noteContent" disabled>
 					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Necessitatibus non delectus dolor placeat. Saepe
 					harum nulla velit ab provident. Culpa odio alias dolor delectus commodi fugit, ratione facilis soluta
 					voluptatibus!
 				</textarea
 				>
+				<input type="text" name="" id="noteID" hidden />
+				<input type="text" name="" id="noteStatus" hidden />
+				<i id="switchToEditMode" class="fa-solid fa-pen editBT"></i>
 			</article>
 		</dialog>
 
-		<!-- note editor -->
+		<!-- note viewer -->
 		<dialog class="add-dialog">
 			<article class="AddContent">
 				<header>
 					<input type="text" name="title" class="inp-title" placeholder="title..." />
-					<select name="select" aria-label="Select" required>
+					<select name="select" aria-label="Select" class="inp-status" required>
 						<option selected disabled value="">Select</option>
-						<option>Done</option>
-						<option>TODO</option>
-						<option>WIP</option>
+						<option value="Done">Done</option>
+						<option value="TODO" selected>TODO</option>
+						<option value="in progress">WIP</option>
 					</select>
-					<button aria-label="Close" rel="prev" onclick="$('.add-dialog').removeAttr('open')"></button>
+					<button aria-label="Close" rel="prev" onclick="$('.add-dialog').removeAttr('open') "></button>
 				</header>
 				<textarea class="edit-content"> </textarea>
-				<button class="addNoteBT contrast">
+				<button class="addNoteBT contrast" id="finishBT" onclick="addNote()">
 					<i class="fa-solid fa-plus"></i>
 				</button>
 			</article>
 		</dialog>
 
+		<!-- note editor -->
+		<dialog class="edit-dialog">
+			<article class="AddContent">
+				<header>
+					<input type="text" name="title" class="note-title" placeholder="title..." />
+					<select name="select" aria-label="Select" class="note-status" required>
+						<option selected disabled value="">Select</option>
+						<option value="Done">Done</option>
+						<option value="TODO" selected>TODO</option>
+						<option value="in progress">WIP</option>
+					</select>
+					<button aria-label="Close" rel="prev" onclick="$('.edit-dialog').removeAttr('open') "></button>
+				</header>
+				<input type="text" name="" class="noteID" hidden />
+				<textarea class="edit-content note-content"> </textarea>
+				<button class="addNoteBT contrast" onclick="updateNote()">
+					<i class="fa-solid fa-floppy-disk"></i>
+				</button>
+			</article>
+		</dialog>
+
 		<!-- add note button -->
-		<button class="addNoteBTFirst" onclick="$('.add-dialog').attr('open', true)">
-			<i class="fa-solid fa-plus"></i>
-		</button>
+		<div class="bottem-buttons group">
+			<button class="CommitBT" onclick="commitDB()" data-placement="left" data-tooltip="Soon to be automated">
+				<i class="fa-solid fa-save"></i>
+			</button>
+			<button class="ExportBT" onclick="downloadDatabase()">
+				<i class="fa-solid fa-download"></i>
+			</button>
+
+			<button class="ImportBT" onclick="loadDatabaseFromFile()">
+				<i class="fa-solid fa-upload"></i>
+			</button>
+			<button class="addNoteBTFirst" onclick="$('.add-dialog').attr('open', true)">
+				<i class="fa-solid fa-plus"></i>
+			</button>
+		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 		<script src="https://kit.fontawesome.com/2e34a63ef0.js" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
 		<script src="database.js"></script>
 		<script src="helper.js"></script>
