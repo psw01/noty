@@ -1,3 +1,8 @@
+//  TODO: instead of hard coded 3 status make it extensible by reading the db
+//  TODO: add a way to have multiple databases (that can be loaded by click on them from a panel)
+//
+//
+
 function openNote() {
 	console.log(this);
 	let ID = $(this).attr("data-noteID");

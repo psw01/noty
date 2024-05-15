@@ -2,14 +2,14 @@ let db;
 const SQL = initSqlJs({
 	locateFile: (file) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`,
 }).then((SQL) => {
-	const existingDatabase = localStorage.getItem("database");
+	const existingDatabase = localStorage.getItem("todo-list-database");
 	if (existingDatabase) {
 		const binaryPayload = new Uint8Array(existingDatabase.split(",").map(Number));
 		db = new SQL.Database(binaryPayload);
 	} else {
 		db = new SQL.Database();
 		const data = db.export();
-		localStorage.setItem("database", data);
+		localStorage.setItem("todo-list-database", data);
 	}
 	db.exec(`
             CREATE TABLE IF NOT EXISTS NOTES (
@@ -29,7 +29,7 @@ const SQL = initSqlJs({
 async function commitDB() {
 	await SQL;
 	const data = db.export();
-	localStorage.setItem("database", data);
+	localStorage.setItem("todo-list-database", data);
 	console.log("committed");
 }
 
